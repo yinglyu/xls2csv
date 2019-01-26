@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 import os,sys,inspect,re
-import xdrlib,xlrd
-
+import xdrlib,xlrd,xpinyin
+PINYIN = xpinyin.Pinyin()
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
@@ -90,8 +90,14 @@ def savaToCSV(_file, _list, _path):
     content = ""
     #生成文件内容
     for collist in _list:
-        for i in range(len(collist)):
-            v = collist[i]
+        newlist = []
+        newlist.append(collist[2])#学号
+        newlist.append(collist[1])#姓名
+        newlist.append(PINYIN.get_pinyin(collist[1], ' '))#拼音
+        newlist.append("初一")#年级
+        newlist.append(collist[0])#班级
+        for i in range(len(newlist)):
+            v = newlist[i]
             vstr = ""
             # print k,v
             if isinstance(v, float) or isinstance(v, int):
